@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Nomes - Era Hyboriana</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(20, 30, 50, 0.9);
+            border: 3px solid #d4af37;
+            border-radius: 10px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(212, 175, 55, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #d4af37;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #a0a0a0;
+            margin-bottom: 30px;
+            font-style: italic;
+            font-size: 0.9em;
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            color: #d4af37;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 2px solid #d4af37;
+            padding-bottom: 10px;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            padding: 10px 12px;
+            background: linear-gradient(135deg, #d4af37 0%, #aa8c2c 100%);
+            border: 2px solid #8b7520;
+            color: #1a1a2e;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #e5c158 0%, #d4af37 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button.active {
+            background: linear-gradient(135deg, #8b7520 0%, #5a4f1a 100%);
+            color: #d4af37;
+        }
+
+        .gender-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .gender-btn {
+            flex: 1;
+            padding: 10px;
+            background: linear-gradient(135deg, #d4af37 0%, #aa8c2c 100%);
+            border: 2px solid #8b7520;
+            color: #1a1a2e;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .gender-btn:hover {
+            background: linear-gradient(135deg, #e5c158 0%, #d4af37 100%);
+        }
+
+        .gender-btn.active {
+            background: linear-gradient(135deg, #8b7520 0%, #5a4f1a 100%);
+            color: #d4af37;
+        }
+
+        .result-section {
+            background: rgba(10, 20, 35, 0.8);
+            border: 2px solid #d4af37;
+            border-radius: 5px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .result-label {
+            color: #a0a0a0;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .result-name {
+            color: #d4af37;
+            font-size: 2.2em;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            word-break: break-word;
+        }
+
+        .result-names {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .name-item {
+            color: #d4af37;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            background: rgba(212, 175, 55, 0.1);
+            border-left: 3px solid #d4af37;
+            border-radius: 3px;
+        }
+
+        .details {
+            color: #c0c0c0;
+            font-size: 0.9em;
+            margin-top: 15px;
+            line-height: 1.6;
+        }
+
+        .details p {
+            margin-bottom: 8px;
+        }
+
+        .footer {
+            text-align: center;
+            color: #808080;
+            font-size: 0.8em;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #404040;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+
+            .result-name {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚔️ Gerador de Nomes ⚔️</h1>
+        <p class="subtitle">Era Hyboriana</p>
+
+        <div class="section">
+            <div class="section-title">País de Origem</div>
+            <div class="button-group">
+                <button onclick="setCountry('aquilonian')">Aquilonia</button>
+                <button onclick="setCountry('argos')">Argos</button>
+                <button onclick="setCountry('asgard')">Asgard</button>
+                <button onclick="setCountry('brythunia')">Brythunia</button>
+                <button onclick="setCountry('cimmeria')">Cimmeria</button>
+                <button onclick="setCountry('corinthia')">Corinthia</button>
+                <button onclick="setCountry('ghulistan')">Ghulistan</button>
+                <button onclick="setCountry('hyperborea')">Hyperborea</button>
+                <button onclick="setCountry('hyrkania')">Hyrkania</button>
+                <button onclick="setCountry('iranistan')">Iranistan</button>
+                <button onclick="setCountry('keshan')">Keshan</button>
+                <button onclick="setCountry('khitai')">Khitai</button>
+                <button onclick="setCountry('koth')">Koth</button>
+                <button onclick="setCountry('kush')">Kush</button>
+                <button onclick="setCountry('meru')">Meru</button>
+                <button onclick="setCountry('nemedia')">Nemedia</button>
+                <button onclick="setCountry('ophir')">Ophir</button>
+                <button onclick="setCountry('pictland')">Pictland</button>
+                <button onclick="setCountry('shem')">Shem</button>
+                <button onclick="setCountry('stygia')">Stygia</button>
+                <button onclick="setCountry('turan')">Turan</button>
+                <button onclick="setCountry('vendhya')">Vendhya</button>
+                <button onclick="setCountry('zamora')">Zamora</button>
+                <button onclick="setCountry('zembabwei')">Zembabwei</button>
+                <button onclick="setCountry('zingara')">Zingara</button>
+                <button onclick="setCountry('random')">🎲 Aleatório</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Gênero</div>
+            <div class="gender-selector">
+                <button class="gender-btn active" onclick="setGender('male')">Masculino</button>
+                <button class="gender-btn" onclick="setGender('female')">Feminino</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <button onclick="generateNames()" style="width: 100%; padding: 15px; font-size: 1.1em;">
+                ⚡ GERAR 5 NOMES ⚡
+            </button>
+        </div>
+
+        <div class="result-section">
+            <div class="result-label">Nomes Gerados:</div>
+            <div class="result-names" id="namesDisplay">Clique em "GERAR 5 NOMES"</div>
+            <div class="details" id="detailsDisplay"></div>
+        </div>
+
+        <div class="footer">
+            <p>Baseado nas tabelas de nomes da Era Hyboriana</p>
+            <p>Conan Properties Inc.</p>
+        </div>
+    </div>
+
+    <script>
+        // Dados dos nomes por país e gênero - Expandido com todas as regiões
+        const nameDatabase = {
+            aquilonian: {
+                male: ["Attalus", "Banthus", "Baraccus", "Dexitheus", "Dion", "Emilius", "Epeus", "Flavius", "Hadrathus", "Lucian", "Publius", "Tuscelan", "Servius", "Vilerius"],
+                female: ["Junia"]
+            },
+            argos: {
+                male: ["Arete", "Dienikes", "Doreion", "Polynikes", "Xeones"],
+                female: ["Arete", "Dienikes"]
+            },
+            asgard: {
+                male: ["Bragi", "Egil", "Gorm", "Heimdul", "Niord", "Njal", "Rann", "Sigurd", "Wulfhere"],
+                female: ["Horsa"]
+            },
+            brythunia: {
+                male: ["Aelric", "Eldran", "Ellandune", "Fyrdan", "Godtan", "Haral"],
+                female: ["Boudanecea"]
+            },
+            cimmeria: {
+                male: ["Bodhrann", "Bronwith", "Chulainn", "Conan", "Milach", "Rorik", "Twyl"],
+                female: ["Anga", "Chamta", "Dietra"]
+            },
+            corinthia: {
+                male: ["Dalius", "Hogistum", "Lemparius", "Loganaro", "Sovartus", "Vitarius"],
+                female: ["Djuluva", "Eldia", "Kinna"]
+            },
+            ghulistan: {
+                male: ["Yar Afzal", "Ashraf", "Babur", "Nader", "Tahmasp"],
+                female: ["Yar Afzal", "Ashraf"]
+            },
+            hyperborea: {
+                male: ["Kamoinen", "Louhi", "Vammatar"],
+                female: ["Ilga"]
+            },
+            hyrkania: {
+                male: ["Guyak", "Kuchlug", "Mazdak", "Torgut"],
+                female: ["Bartatua", "Boria"]
+            },
+            iranistan: {
+                male: ["Balash", "Hakhmanni", "Kobad", "Sassan"],
+                female: ["Nanaia"]
+            },
+            keshan: {
+                male: ["Bakumbe"],
+                female: ["Gorluga", "Owarunga", "Yelaya"]
+            },
+            khitai: {
+                male: ["Yah Chieng", "Kang Hsiu", "Kang Lou-dze", "Leng Chi", "Pra-Eun", "Yo La-gu"],
+                female: ["Yah Chieng", "Kang Hsiu"]
+            },
+            koth: {
+                male: ["Amalric", "Constantius", "Ivor", "Salome", "Strabonus", "Taurus", "Thespides", "Valerius"],
+                female: ["Ivga", "Vateesa", "Yasmela"]
+            },
+            kush: {
+                male: ["Bajujh", "Bwatu", "Gobir", "Saidu", "Sakumbe"],
+                female: ["Aja", "Ajonga", "Bombaata", "Juma", "Laranga", "Yasala"]
+            },
+            meru: {
+                male: ["Tanzong Tengri"],
+                female: ["Jalung Thongpa"]
+            },
+            nemedia: {
+                male: ["Alcimedes", "Altaro", "Amalric", "Arideus", "Astreas", "Bragoras", "Caranthes", "Demetrio", "Dionus", "Enaros", "Ostorio", "Posthumo", "Promero"],
+                female: ["Diana", "Octavia"]
+            },
+            ophir: {
+                male: ["Barras", "Chelkus", "Fronto", "Garus"],
+                female: ["Marala"]
+            },
+            pictland: {
+                male: ["Zogar Sag"],
+                female: ["Sagyetha"]
+            },
+            shem: {
+                male: ["Afrit", "Aramas", "Bêlit", "Dathan", "Eblis", "Ebunezeb", "Elohar", "Enosh", "Gilzan", "Gomer", "Isaiab", "Mattenbaal", "Nahor", "Nitokar", "Uriaz", "Yin Allal", "Zebah", "Zillah"],
+                female: ["Mena"]
+            },
+            stygia: {
+                male: ["Amnun", "Bahotep", "Ctesphon", "Hakketh", "Hotep", "Kutamun", "Menemhet", "Ramwas", "Shuat", "Siptah", "Thoth-Amon", "Thothmekri", "Thutmekri", "Thutothmes", "Tothapis", "Tuthamon", "Zeriti"],
+                female: ["Heterka", "Khafra", "Khaza", "Menkara", "Nehekba"]
+            },
+            turan: {
+                male: ["Abdul", "Aram Baksh", "Atalis", "Banaric", "Ghurran", "Hamar Kur", "Hormaz", "Jamal", "Jelal", "Khalid", "Mulai", "Munthassen", "Murad", "Shapur", "Tavik", "Tureg", "Vardan", "Yezdigerd", "Yildiz"],
+                female: ["Bakra", "Zosara"]
+            },
+            vendhya: {
+                male: ["Bhunda Chand", "Chunder Shan", "Jharim", "Kandar", "Karim", "Naipal", "Patil", "Punjar", "Shahal"],
+                female: ["Alyna", "Gitara", "Orissa", "Vyndra", "Yasmina"]
+            },
+            zamora: {
+                male: ["Abuletes", "Artanes", "Bartakes", "Dinak", "Eriakes", "Feridun", "Harpagus", "Hattusas", "Hissar", "Kagul", "Lar", "Mithridates", "Pariskas", "Rudabeh", "Semiramas", "Stahir", "Tigranes", "Vardanes", "Yazdates"],
+                female: ["Atossa", "Kilya", "Mandana", "Nyssa", "Roxana", "Tosya", "Yara"]
+            },
+            zembabwei: {
+                male: ["Nenaunir"],
+                female: ["Lumbeba", "Mbega", "Mkwana"]
+            },
+            zingara: {
+                male: ["Avvinti", "Carico", "Cratos", "Destandasi", "Ferdrugo", "Galbro", "Gebellez", "Godrigo", "Gonzalvio", "Julio", "Kapellez", "Korst", "Marco", "Mordermi", "Murzio", "Rimanendo", "Sandokazi", "Santiddio", "Shevatas", "Valbroso", "Valenso", "Valerio", "Vancho", "Velio", "Zapayo"],
+                female: ["Chabela", "Rinnova", "Sancha"]
+            }
+        };
+
+        let currentCountry = 'aquilonian';
+        let currentGender = 'male';
+
+        function setCountry(country) {
+            if (country === 'random') {
+                const countries = ['aquilonian', 'argos', 'asgard', 'brythunia', 'cimmeria', 'corinthia', 'ghulistan', 'hyperborea', 'hyrkania', 'iranistan', 'keshan', 'khitai', 'koth', 'kush', 'meru', 'nemedia', 'ophir', 'pictland', 'shem', 'stygia', 'turan', 'vendhya', 'zamora', 'zembabwei', 'zingara'];
+                currentCountry = countries[Math.floor(Math.random() * countries.length)];
+            } else {
+                currentCountry = country;
+            }
+            updateCountryButtons();
+        }
+
+        function setGender(gender) {
+            currentGender = gender;
+            updateGenderButtons();
+        }
+
+        function updateCountryButtons() {
+            document.querySelectorAll('.button-group button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+        }
+
+        function updateGenderButtons() {
+            document.querySelectorAll('.gender-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            if (currentGender === 'male') {
+                document.querySelectorAll('.gender-btn')[0].classList.add('active');
+            } else {
+                document.querySelectorAll('.gender-btn')[1].classList.add('active');
+            }
+        }
+
+        function getRandomElement(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        function generateNames() {
+            const db = nameDatabase[currentCountry];
+            const names = currentGender === 'male' ? db.male : db.female;
+            const generatedNames = [];
+
+            // Gerar 5 nomes únicos ou repetir se houver poucos
+            for (let i = 0; i < 5; i++) {
+                generatedNames.push(getRandomElement(names));
+            }
+
+            displayNames(generatedNames);
+        }
+
+        function displayNames(namesList) {
+            const namesDisplay = document.getElementById('namesDisplay');
+            const detailsDisplay = document.getElementById('detailsDisplay');
+
+            namesDisplay.innerHTML = namesList.map((name, index) => 
+                `<div class="name-item">${index + 1}. ${name}</div>`
+            ).join('');
+
+            const countryNames = {
+                'aquilonian': 'Aquilonia',
+                'argos': 'Argos',
+                'asgard': 'Asgard',
+                'brythunia': 'Brythunia',
+                'cimmeria': 'Cimmeria',
+                'corinthia': 'Corinthia',
+                'ghulistan': 'Ghulistan',
+                'hyperborea': 'Hyperborea',
+                'hyrkania': 'Hyrkania',
+                'iranistan': 'Iranistan',
+                'keshan': 'Keshan',
+                'khitai': 'Khitai',
+                'koth': 'Koth',
+                'kush': 'Kush',
+                'meru': 'Meru',
+                'nemedia': 'Nemedia',
+                'ophir': 'Ophir',
+                'pictland': 'Pictland',
+                'shem': 'Shem',
+                'stygia': 'Stygia',
+                'turan': 'Turan',
+                'vendhya': 'Vendhya',
+                'zamora': 'Zamora',
+                'zembabwei': 'Zembabwei',
+                'zingara': 'Zingara'
+            };
+
+            const genderNames = {
+                'male': 'Masculino',
+                'female': 'Feminino'
+            };
+
+            detailsDisplay.innerHTML = `
+                <p><strong>País:</strong> ${countryNames[currentCountry]}</p>
+                <p><strong>Gênero:</strong> ${genderNames[currentGender]}</p>
+            `;
+        }
+
+        // Inicializar interface
+        updateGenderButtons();
+    </script>
+</body>
+</html>
